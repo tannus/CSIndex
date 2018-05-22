@@ -16,7 +16,9 @@ import re
 from flask import Flask, jsonify, abort, make_response, request
 from tokenize import generate_tokens
 from collections import defaultdict
+import csv
 from csv import reader
+import sys
 
 app = Flask(__name__)
 
@@ -254,7 +256,6 @@ def get_papers_area():
    	title = ""
    	depts = ""
    	authors = ""
-   	tok_line = []
    	for line in reader(data):
    		year = line[0]
    		title = line[2]
@@ -262,6 +263,90 @@ def get_papers_area():
 		authors = line[4]
    		out.write(year + "," + title + "," + depts + "," + authors + "\n")	
    	
+   	return str(1)
+
+#8 - Todos os papers de uma area em um determinado ano
+@app.route("/api/8")
+def get_papers_area_year():
+	area = request.args.get('area')
+	year = request.args.get('year')
+
+   	if len(year)==0 or len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		if dirs != "profs":
+	   		for filename in files:
+	   			if filename == (area + "-out-papers.csv"):
+	   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	out = open(file_path + area + "-all-papers-year.csv", "w")
+
+   	xyear = ""
+   	title = ""
+   	depts = ""
+   	authors = ""
+   	writer = csv.writer(out, delimiter=",")
+   	for line in reader(data):
+   		xyear = line[0]
+   		if xyear == year:
+   			title = line[2]
+   			depts = line[3]
+			authors = line[4]
+			if isinstance(title, str):
+				title = unicode(title, "utf-8")
+			if isinstance(depts, str):
+				depts = unicode(depts, "utf-8")
+			if isinstance(authors, str):
+				authors = unicode(authors, "utf-8")
+   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),depts.encode("utf-8"),authors.encode("utf-8")])
+   	return str(1)
+
+#9 - Todos os papers de um departamento em uma area
+@app.route("/api/9")
+def get_papers_area_dept():
+	area = request.args.get('area')
+	dept = request.args.get('dept')
+
+   	if len(dept)==0 or len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		if dirs != "profs":
+	   		for filename in files:
+	   			if filename == (area + "-out-papers.csv"):
+	   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	out = open(file_path + area + "-all-papers-dept.csv", "w")
+
+   	xdept = ""
+   	title = ""
+   	depts = ""
+   	authors = ""
+   	writer = csv.writer(out, delimiter=",")
+   	for line in reader(data):
+   		xdept = line[3]
+   		if xdept == dept:
+   			year = line[0]
+   			title = line[2]
+			authors = line[4]
+			if isinstance(title, str):
+				title = unicode(title, "utf-8")
+			if isinstance(depts, str):
+				depts = unicode(depts, "utf-8")
+			if isinstance(authors, str):
+				authors = unicode(authors, "utf-8")
+   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),depts.encode("utf-8"),authors.encode("utf-8")])
    	return str(1)
 
 @app.route("/todo/api/v1.0/tasks", methods=['GET'])
