@@ -3,7 +3,7 @@ API para trabalho de Engenharia de Software 2
 
 Autores: 
 	Henrique Eustaquio Lopes Ferreira 2015068990
-	Tiago Melo Tannus 
+	Tiago Melo Tannus 2012079762
 
 Implementado com:
 	Flask 1.0.2
@@ -187,6 +187,45 @@ def get_prof_dep_area():
    	out.write("TOTAL," + str(n))
    	return str(n)
 
+#6 - Numero de professores de um determinado departamento que publicam em uma area
+@app.route("/api/6")
+def get_prof_sdep_area():
+	area = request.args.get('area')
+	dep = request.args.get('dep')
+
+   	if len(dep)==0 or len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		if dirs != "profs":
+	   		for filename in files:
+	   			if filename == (area + "-out-papers.csv"):
+	   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	n = 0
+   	dep = ""
+   	tok_line = []
+   	ans = defaultdict(int)
+   	for line in data.readlines():
+   		tok_line = line.split(",")
+   		dep = tok_line[3]
+		ans[dep] += 1
+   	
+   	out = open(file_path + area + "-prof-sdep-publi.csv", "w")
+
+   	for key,val in ans.items():
+   		if key == dep:
+   			out.write(str(key) + ",")
+   			out.write(str(val) + "\n")
+   		n += val
+   	
+   	out.write("TOTAL," + str(n))
+   	return str(n)
 
 @app.route("/todo/api/v1.0/tasks", methods=['GET'])
 def get_tasks():
