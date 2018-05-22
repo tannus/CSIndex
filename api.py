@@ -50,11 +50,8 @@ def get_publi_conf_area():
 
    	data = open(file_path + file, "r")
 
-   	n = ""
    	correct = ""
-   	what = []
    	for line in data.readlines():
-		what.append(line)
 		if line.find(conf) != -1:
  			correct = line
    	
@@ -107,6 +104,32 @@ def get_score_area():
 		n += float(line[line.find(",")+1:len(line)-1])
    	
    	return str(n)
+
+# Numero de publicacoes em uma determinada conferencia de uma area
+@app.route("/api/4")
+def get_publi_dep_area():
+	dep = request.args.get('dep')
+   	area = request.args.get('area')
+
+   	if len(dep)==0 or len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		for filename in files:
+   			if filename == (area + "-out-scores.csv"):
+   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	for line in data.readlines():
+		if line.find(dep) != -1:
+ 			correct = line
+   	
+   	return correct[correct.find(",")+1:len(correct)-1]
+
 
 
 @app.route("/todo/api/v1.0/tasks", methods=['GET'])
