@@ -349,59 +349,51 @@ def get_papers_area_dept():
    			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),depts.encode("utf-8"),authors.encode("utf-8")])
    	return str(1)
 
-@app.route("/todo/api/v1.0/tasks", methods=['GET'])
-def get_tasks():
-	return jsonify({'tasks': tasks})
+#10 - Todos os papers de um professor (dado o seu nome)
+@app.route("/api/10")
+def get_papers_area_prof():
+	area = request.args.get('area')
+	prof = request.args.get('prof')
 
-@app.route("/todo/api/v1.0/tasks/<int:task_id>", methods=['GET'])
-def get_task(task_id):
-	task = [task for task in tasks if task['id'] == task_id]
-	if len(task) == 0:
-		abort(404)
-	return jsonify({'task': task[0]})
+   	if len(prof)==0 or len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		if dirs != "profs":
+	   		for filename in files:
+	   			if filename == (area + "-out-papers.csv"):
+	   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	out = open(file_path + area + "-all-papers-dept.csv", "w")
+
+   	dept = ""
+   	title = ""
+   	depts = ""
+   	authors = ""
+   	writer = csv.writer(out, delimiter=",")
+   	for line in reader(data):
+   		authors = line[4]
+   		if isinstance(authors, str):
+			authors = unicode(authors, "utf-8")
+   		if prof in authors:
+   			year = line[0]
+   			title = line[2]
+			dept = line[3]	
+			if isinstance(title, str):
+				title = unicode(title, "utf-8")
+			if isinstance(depts, str):
+				depts = unicode(depts, "utf-8")
+   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),depts.encode("utf-8"),authors.encode("utf-8")])
+   	return str(1)
 
 @app.errorhandler(404)
 def not_found(error):
 	return make_response(jsonify({'error': 'Not found'}), 404)
-
-@app.route("/todo/api/v1.0/tasks", methods=['POST'])
-def create_task():
-	if not request.json or not 'title' in request.json:
-		abort(400)
-	task = {
-		'id': tasks[-1]['id'] + 1,
-		'title': request.json['title'],
-		'description': request.json.get('description', ""),
-		'done': False
-	}
-	tasks.append(task)
-	return jsonify({'task': task}), 201
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['PUT'])
-def update_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    if not request.json:
-        abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
-        abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
-        abort(400)
-    if 'done' in request.json and type(request.json['done']) is not bool:
-        abort(400)
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['done'] = request.json.get('done', task[0]['done'])
-    return jsonify({'task': task[0]})
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['DELETE'])
-def delete_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    tasks.remove(task[0])
-    return jsonify({'result': True})
     
 if __name__ == '__main__':
 	app.run(debug=True)
