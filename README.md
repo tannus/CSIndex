@@ -10,7 +10,7 @@ Basicamente, por ser quase um protótipo, optamos por utilizar a URL padrão /ap
 
 Temos, enfim, a escolha de uma url para cada questão. Isso foi proposto pela simplicidade de implementação. O método HTTP utilizado foi o GET, já que só temos retrieving de dados e não precisamos de outras funcionalidades no momento.
 
-Em termos de REST e HTTP, temos:
+Em termos de REST e HTTP temos a tabela abaixo ilustrando para cada uma das consultas o método utilizado, a url a ser acessada por ele, os parâmetros para realizar a consulta, a ação à ser executada e um exemplo de execução:
 
 
 | Método HTTP | URL | Action | Exemplo |
@@ -26,8 +26,5 @@ Em termos de REST e HTTP, temos:
 | GET | http://api/9 | Todos os papers de um departamento em uma área | |
 | GET | http://api/10 | Todos os papers de um professor (dado o seu nome) | http://localhost:5000/api/10?area=ai&prof=Mohammad%20Rashedul%20Hasan |
 
-
-Adicionalmente é importante ressaltar cada um dos parametros para realizar as consultas propriamente:
-Area
 
 Por fim, em termos de códigos de erros, optamos por utilizar o 404 para Not Found, conforme o padrão HTTP. Remodelamos para .json para facilitar a leitura do erro.
