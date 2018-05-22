@@ -14,6 +14,7 @@ Implementado com:
 import os
 from flask import Flask, jsonify, abort, make_response, request
 from tokenize import generate_tokens
+from collections import defaultdict
 
 app = Flask(__name__)
 
@@ -56,7 +57,12 @@ def get_publi_conf_area():
 		if line.find(conf) != -1:
  			correct = line
 
-   	return correct[correct.find(",")+1:len(correct)-1]
+ 	ans = correct[correct.find(",")+1:len(correct)-1]
+ 	
+ 	out = open(file_path + area + "-publi-conf.csv", "w")
+ 	out.write(ans)
+
+   	return ans
 
 #2 - Numero de publicacoes no conjunto de conferencias de uma area
 @app.route("/api/2")
@@ -80,6 +86,9 @@ def get_publi_area():
    	for line in data.readlines():
 		n += int(line[line.find(",")+1:len(line)-1])
    	
+   	out = open(file_path + area + "-publi.csv", "w")
+ 	out.write(str(n))
+
    	return str(n)
 
 #3 - Scores de todos os departamentos em uma area
@@ -100,13 +109,18 @@ def get_score_area():
 
    	data = open(file_path + file, "r")
 
+   	out = open(file_path + area + "-dep-scores.csv", "w")
+
    	n = 0
    	for line in data.readlines():
+   		out.write(line)
 		n += float(line[line.find(",")+1:len(line)-1])
    	
+ 	out.write("TOTAL," + str(n))
+
    	return str(n)
 
-#4 - Numero de publicacoes em uma determinada conferencia de uma area
+#4 - Score de um determinado departamento em uma area
 @app.route("/api/4")
 def get_publi_dep_area():
 	dep = request.args.get('dep')
@@ -125,11 +139,15 @@ def get_publi_dep_area():
 
    	data = open(file_path + file, "r")
 
+   	correct = ""
    	for line in data.readlines():
 		if line.find(dep) != -1:
  			correct = line
-   	
-   	return correct[correct.find(",")+1:len(correct)-1]
+	
+	out = open(file_path + area + "-dep-scores.csv", "w")
+	out.write(correct)
+
+   	return correct
 
 #5 - Numero de professores que publicam em uma determinada area (organizados por departamentos)
 @app.route("/api/5")
@@ -153,14 +171,11 @@ def get_prof_dep_area():
    	n = 0
    	dep = ""
    	tok_line = []
-   	ans = {}
+   	ans = defaultdict(int)
    	for line in data.readlines():
    		tok_line = line.split(",")
    		dep = tok_line[3]
-   		try:
-		    ans[dep] += 1
-		except KeyError:
-		    ans[dep] = 1
+		ans[dep] += 1
    	
    	out = open(file_path + area + "-prof-dep-publi.csv", "w")
 
@@ -169,6 +184,7 @@ def get_prof_dep_area():
    		out.write(str(val) + "\n")
    		n += val
    	
+   	out.write("TOTAL," + str(n))
    	return str(n)
 
 
