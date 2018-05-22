@@ -13,17 +13,21 @@ Temos, enfim, a escolha de uma url para cada questão. Isso foi proposto pela si
 Em termos de REST e HTTP, temos:
 
 
-| Método HTTP | URL | Action |
-| --- | --- | --- |
-| GET | http://api/1 | Número de publicações em uma determinada conferência de uma área |
-| GET | http://api/2 | Número de publicações no conjunto de conferências de uma área |
-| GET | http://api/3 | Scores de todos os departamentos em uma área |
-| GET | http://api/4 | Score de um determinado departamento em uma área |
-| GET | http://api/5 | Número de professores que publicam em uma determinada área (organizados por departamentos) |
-| GET | http://api/6 | Número de professores de um determinado departamento que publicam em uma área |
-| GET | http://api/7 | Todos os papers de uma área (ano, título, deptos e autores) |
-| GET | http://api/8 | Todos os papers de uma área em um determinado ano |
-| GET | http://api/9 | Todos os papers de um departamento em uma área |
-| GET | http://api/10 | Todos os papers de um professor (dado o seu nome) |
+| Método HTTP | URL | Action | Exemplo |
+| --- | --- | --- | --- |
+| GET | http://api/1 | Número de publicações em uma determinada conferência de uma área | |
+| GET | http://api/2 | Número de publicações no conjunto de conferências de uma área | |
+| GET | http://api/3 | Scores de todos os departamentos em uma área | |
+| GET | http://api/4 | Score de um determinado departamento em uma área | |
+| GET | http://api/5 | Número de professores que publicam em uma determinada área (organizados por departamentos) | |
+| GET | http://api/6 | Número de professores de um determinado departamento que publicam em uma área | |
+| GET | http://api/7 | Todos os papers de uma área (ano, título, deptos e autores) | |
+| GET | http://api/8 | Todos os papers de uma área em um determinado ano | |
+| GET | http://api/9 | Todos os papers de um departamento em uma área | |
+| GET | http://api/10 | Todos os papers de um professor (dado o seu nome) | http://localhost:5000/api/10?area=ai&prof=Mohammad%20Rashedul%20Hasan |
+
+
+Adicionalmente é importante ressaltar cada um dos parametros para realizar as consultas propriamente:
+Area
 
 Por fim, em termos de códigos de erros, optamos por utilizar o 404 para Not Found, conforme o padrão HTTP. Remodelamos para .json para facilitar a leitura do erro.
