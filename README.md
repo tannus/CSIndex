@@ -19,8 +19,7 @@ Em termos de REST e HTTP, temos:
 | GET | http://api/2 | Número de publicações no conjunto de conferências de uma área |
 | GET | http://api/3 | Scores de todos os departamentos em uma área |
 | GET | http://api/4 | Score de um determinado departamento em uma área |
-| GET | http://api/5 | Número de professores que publicam em uma determinada área (organizados por 
-departamentos) |
+| GET | http://api/5 | Número de professores que publicam em uma determinada área (organizados por departamentos) |
 | GET | http://api/6 | Número de professores de um determinado departamento que publicam em uma área |
 | GET | http://api/7 | Todos os papers de uma área (ano, título, deptos e autores) |
 | GET | http://api/8 | Todos os papers de uma área em um determinado ano |
