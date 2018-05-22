@@ -60,12 +60,12 @@ def get_publi_conf_area():
    	
    	return correct[correct.find(",")+1:len(correct)-1]
 
-# Número de publicações no conjunto de conferências de uma área
+# Numero de publicacoes no conjunto de conferencias de uma area
 @app.route("/api/2")
 def get_publi_area():
-	conf = request.args.get('area')
+	area = request.args.get('area')
 
-   	if len(conf)==0 or len(area)==0:
+   	if len(area)==0:
    		abort(404)
    	
    	file = ""
@@ -82,9 +82,9 @@ def get_publi_area():
    	correct = ""
    	what = []
    	for line in data.readlines():
-		n += line[line.find(",")+1:len(line)-1]
+		n += int(line[line.find(",")+1:len(line)-1])
    	
-   	return 
+   	return str(n)
 
 
 
