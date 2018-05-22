@@ -19,7 +19,7 @@ Em termos de REST e HTTP temos a tabela abaixo ilustrando para cada uma das cons
 
 
 | Método HTTP | URL | Parâmetros | Action | Exemplo |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | GET | http://localhost:5000/api/1 | Número de publicações em uma determinada conferência de uma área | http://localhost:5000/api/1?area=ai&conf=GECCO |
 | GET | http://localhost:5000/api/2 | Número de publicações no conjunto de conferências de uma área | http://localhost:5000/api/2?area=se |
 | GET | http://localhost:5000/api/3 | Scores de todos os departamentos em uma área | http://localhost:5000/api/3?area=ai |
