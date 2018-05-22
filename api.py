@@ -11,8 +11,9 @@ Implementado com:
 	[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)]
 """
 
-from flask import Flask, jsonify, abort, make_response, request
 import os
+from flask import Flask, jsonify, abort, make_response, request
+from tokenize import generate_tokens
 
 app = Flask(__name__)
 
@@ -31,7 +32,7 @@ tasks = [
 	}
 ]
 
-# Numero de publicacoes em uma determinada conferencia de uma area
+#1 - Numero de publicacoes em uma determinada conferencia de uma area
 @app.route("/api/1")
 def get_publi_conf_area():
 	conf = request.args.get('conf')
@@ -54,10 +55,10 @@ def get_publi_conf_area():
    	for line in data.readlines():
 		if line.find(conf) != -1:
  			correct = line
-   	
+
    	return correct[correct.find(",")+1:len(correct)-1]
 
-# Numero de publicacoes no conjunto de conferencias de uma area
+#2 - Numero de publicacoes no conjunto de conferencias de uma area
 @app.route("/api/2")
 def get_publi_area():
 	area = request.args.get('area')
@@ -81,7 +82,7 @@ def get_publi_area():
    	
    	return str(n)
 
-# Scores de todos os departamentos em uma area
+#3 - Scores de todos os departamentos em uma area
 @app.route("/api/3")
 def get_score_area():
 	area = request.args.get('area')
@@ -105,7 +106,7 @@ def get_score_area():
    	
    	return str(n)
 
-# Numero de publicacoes em uma determinada conferencia de uma area
+#4 - Numero de publicacoes em uma determinada conferencia de uma area
 @app.route("/api/4")
 def get_publi_dep_area():
 	dep = request.args.get('dep')
@@ -130,6 +131,45 @@ def get_publi_dep_area():
    	
    	return correct[correct.find(",")+1:len(correct)-1]
 
+#5 - Numero de professores que publicam em uma determinada area (organizados por departamentos)
+@app.route("/api/5")
+def get_prof_dep_area():
+	area = request.args.get('area')
+
+   	if len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		if dirs != "profs":
+	   		for filename in files:
+	   			if filename == (area + "-out-papers.csv"):
+	   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	n = 0
+   	dep = ""
+   	tok_line = []
+   	ans = {}
+   	for line in data.readlines():
+   		tok_line = line.split(",")
+   		dep = tok_line[3]
+   		try:
+		    ans[dep] += 1
+		except KeyError:
+		    ans[dep] = 1
+   	
+   	out = open(file_path + area + "-prof-dep-publi.csv", "w")
+
+   	for key,val in ans.items():
+   		out.write(str(key) + ",")
+   		out.write(str(val) + "\n")
+   		n += val
+   	
+   	return str(n)
 
 
 @app.route("/todo/api/v1.0/tasks", methods=['GET'])
