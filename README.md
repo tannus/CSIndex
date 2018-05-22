@@ -13,7 +13,7 @@ Basicamente, por ser quase um protótipo, optamos por utilizar a URL padrão /ap
 
 Temos, enfim, a escolha de uma url para cada questão. Isso foi proposto pela simplicidade de implementação. O método HTTP utilizado foi o GET, já que só temos retrieving de dados e não precisamos de outras funcionalidades no momento.
 
-##### MÉTODO DE CONSULTA A API
+##### MÉTODO DE CONSULTA À API
 
 Em termos de REST e HTTP temos a tabela abaixo ilustrando para cada uma das consultas o método utilizado, a url a ser acessada por ele, os parâmetros para realizar a consulta, a ação à ser executada e um exemplo de execução:
 
