@@ -79,13 +79,34 @@ def get_publi_area():
    	data = open(file_path + file, "r")
 
    	n = 0
-   	correct = ""
-   	what = []
    	for line in data.readlines():
 		n += int(line[line.find(",")+1:len(line)-1])
    	
    	return str(n)
 
+# Scores de todos os departamentos em uma area
+@app.route("/api/3")
+def get_score_area():
+	area = request.args.get('area')
+
+   	if len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		for filename in files:
+   			if filename == (area + "-out-scores.csv"):
+   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	n = 0
+   	for line in data.readlines():
+		n += float(line[line.find(",")+1:len(line)-1])
+   	
+   	return str(n)
 
 
 @app.route("/todo/api/v1.0/tasks", methods=['GET'])
