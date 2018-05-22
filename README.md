@@ -15,15 +15,15 @@ Em termos de REST e HTTP temos a tabela abaixo ilustrando para cada uma das cons
 
 | Método HTTP | URL | Action | Exemplo |
 | --- | --- | --- | --- |
-| GET | http://api/1 | Número de publicações em uma determinada conferência de uma área | |
-| GET | http://api/2 | Número de publicações no conjunto de conferências de uma área | |
-| GET | http://api/3 | Scores de todos os departamentos em uma área | |
-| GET | http://api/4 | Score de um determinado departamento em uma área | |
-| GET | http://api/5 | Número de professores que publicam em uma determinada área (organizados por departamentos) | |
-| GET | http://api/6 | Número de professores de um determinado departamento que publicam em uma área | |
-| GET | http://api/7 | Todos os papers de uma área (ano, título, deptos e autores) | |
-| GET | http://api/8 | Todos os papers de uma área em um determinado ano | |
-| GET | http://api/9 | Todos os papers de um departamento em uma área | |
+| GET | http://api/1 | Número de publicações em uma determinada conferência de uma área | http://localhost:5000/api/1 |
+| GET | http://api/2 | Número de publicações no conjunto de conferências de uma área | http://localhost:5000/api/2 |
+| GET | http://api/3 | Scores de todos os departamentos em uma área | http://localhost:5000/api/3 |
+| GET | http://api/4 | Score de um determinado departamento em uma área | http://localhost:5000/api/4 |
+| GET | http://api/5 | Número de professores que publicam em uma determinada área (organizados por departamentos) | http://localhost:5000/api/5 |
+| GET | http://api/6 | Número de professores de um determinado departamento que publicam em uma área | http://localhost:5000/api/6 |
+| GET | http://api/7 | Todos os papers de uma área (ano, título, deptos e autores) | http://localhost:5000/api/7 |
+| GET | http://api/8 | Todos os papers de uma área em um determinado ano | http://localhost:5000/api/8 |
+| GET | http://api/9 | Todos os papers de um departamento em uma área | http://localhost:5000/api/9 |
 | GET | http://api/10 | Todos os papers de um professor (dado o seu nome) | http://localhost:5000/api/10?area=ai&prof=Mohammad%20Rashedul%20Hasan |
 
 
