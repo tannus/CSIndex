@@ -14,7 +14,7 @@ Em termos de REST e HTTP, temos:
 
 
 Método HTTP         URL                   Action
-GET                 http://api/1          Número de publicações em uma determinada conferência de uma área
+GET                 http://api/1          Número de publicações em uma determinada conferência de uma área \n
 GET                 http://api/2          Número de publicações no conjunto de conferências de uma área
 GET                 http://api/3          Scores de todos os departamentos em uma área
 GET                 http://api/4          Score de um determinado departamento em uma área
