@@ -12,9 +12,11 @@ Implementado com:
 """
 
 import os
+import re
 from flask import Flask, jsonify, abort, make_response, request
 from tokenize import generate_tokens
 from collections import defaultdict
+from csv import reader
 
 app = Flask(__name__)
 
@@ -226,6 +228,41 @@ def get_prof_sdep_area():
    	
    	out.write("TOTAL," + str(n))
    	return str(n)
+
+#7 - Todos os papers de uma area (ano, titulo, deptos e autores)
+@app.route("/api/7")
+def get_papers_area():
+	area = request.args.get('area')
+	
+   	if len(area)==0:
+   		abort(404)
+   	
+   	file = ""
+   	file_path = "data/"
+
+   	for root, dirs, files in os.walk("data"):
+   		if dirs != "profs":
+	   		for filename in files:
+	   			if filename == (area + "-out-papers.csv"):
+	   				file = filename
+
+   	data = open(file_path + file, "r")
+
+   	out = open(file_path + area + "-all-papers.csv", "w")
+
+   	year = ""
+   	title = ""
+   	depts = ""
+   	authors = ""
+   	tok_line = []
+   	for line in reader(data):
+   		year = line[0]
+   		title = line[2]
+   		depts = line[3]
+		authors = line[4]
+   		out.write(year + "," + title + "," + depts + "," + authors + "\n")	
+   	
+   	return str(1)
 
 @app.route("/todo/api/v1.0/tasks", methods=['GET'])
 def get_tasks():
