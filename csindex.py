@@ -160,7 +160,7 @@ def output_prof_papers(prof_name):
     f.write(',')
     f.write(str(paper[2].encode('utf-8')))
     f.write(',')
-    # f.write(str(paper[3]))  # author pages do not include depts
+    # f.write(str(paper[3]))  # author pages do not include dept
     # f.write(',')
     authors= paper[4]
     for author in authors[:-1]:

@@ -22,21 +22,6 @@ import sys
 
 app = Flask(__name__)
 
-tasks = [
-	{
-		'id': 1,
-		'title': u'Buy groceries',
-		'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-		'done': False 
-	},
-	{
-		'id': 2,
-		'title': u'Learn Python',
-		'description': u'Need to find a good Python tutorial on the web',
-		'done': False 
-	}
-]
-
 #1 - Numero de publicacoes em uma determinada conferencia de uma area
 @app.route("/api/1")
 def get_publi_conf_area():
@@ -54,7 +39,11 @@ def get_publi_conf_area():
    			if filename == (area + "-out-confs.csv"):
    				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	correct = ""
    	for line in data.readlines():
@@ -84,7 +73,11 @@ def get_publi_area():
    			if filename == (area + "-out-confs.csv"):
    				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	n = 0
    	for line in data.readlines():
@@ -111,7 +104,11 @@ def get_score_area():
    			if filename == (area + "-out-scores.csv"):
    				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	out = open(file_path + area + "-dep-scores.csv", "w")
 
@@ -127,7 +124,7 @@ def get_score_area():
 #4 - Score de um determinado departamento em uma area
 @app.route("/api/4")
 def get_publi_dep_area():
-	dep = request.args.get('dep')
+	dept = request.args.get('dept')
    	area = request.args.get('area')
 
    	if len(dep)==0 or len(area)==0:
@@ -141,14 +138,18 @@ def get_publi_dep_area():
    			if filename == (area + "-out-scores.csv"):
    				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	correct = ""
    	for line in data.readlines():
-		if line.find(dep) != -1:
+		if line.find(dept) != -1:
  			correct = line
 	
-	out = open(file_path + area + "-dep-scores.csv", "w")
+	out = open(file_path + area + "-dept-scores.csv", "w")
 	out.write(correct)
 
    	return correct
@@ -170,7 +171,11 @@ def get_prof_dep_area():
 	   			if filename == (area + "-out-papers.csv"):
 	   				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	n = 0
    	dep = ""
@@ -209,7 +214,11 @@ def get_prof_sdep_area():
 	   			if filename == (area + "-out-papers.csv"):
 	   				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	n = 0
    	dep = ""
@@ -248,20 +257,24 @@ def get_papers_area():
 	   			if filename == (area + "-out-papers.csv"):
 	   				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	out = open(file_path + area + "-all-papers.csv", "w")
 
    	year = ""
    	title = ""
-   	depts = ""
+   	dept = ""
    	authors = ""
    	for line in reader(data):
    		year = line[0]
    		title = line[2]
-   		depts = line[3]
+   		dept = line[3]
 		authors = line[4]
-   		out.write(year + "," + title + "," + depts + "," + authors + "\n")	
+   		out.write(year + "," + title + "," + dept + "," + authors + "\n")	
    	
    	return str(1)
 
@@ -283,28 +296,32 @@ def get_papers_area_year():
 	   			if filename == (area + "-out-papers.csv"):
 	   				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	out = open(file_path + area + "-all-papers-year.csv", "w")
 
    	xyear = ""
    	title = ""
-   	depts = ""
+   	dept = ""
    	authors = ""
    	writer = csv.writer(out, delimiter=",")
    	for line in reader(data):
    		xyear = line[0]
    		if xyear == year:
    			title = line[2]
-   			depts = line[3]
+   			dept = line[3]
 			authors = line[4]
 			if isinstance(title, str):
 				title = unicode(title, "utf-8")
-			if isinstance(depts, str):
-				depts = unicode(depts, "utf-8")
+			if isinstance(dept, str):
+				dept = unicode(dept, "utf-8")
 			if isinstance(authors, str):
 				authors = unicode(authors, "utf-8")
-   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),depts.encode("utf-8"),authors.encode("utf-8")])
+   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),dept.encode("utf-8"),authors.encode("utf-8")])
    	return str(1)
 
 #9 - Todos os papers de um departamento em uma area
@@ -325,13 +342,17 @@ def get_papers_area_dept():
 	   			if filename == (area + "-out-papers.csv"):
 	   				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
    	out = open(file_path + area + "-all-papers-dept.csv", "w")
 
    	xdept = ""
    	title = ""
-   	depts = ""
+   	dept = ""
    	authors = ""
    	writer = csv.writer(out, delimiter=",")
    	for line in reader(data):
@@ -342,11 +363,11 @@ def get_papers_area_dept():
 			authors = line[4]
 			if isinstance(title, str):
 				title = unicode(title, "utf-8")
-			if isinstance(depts, str):
-				depts = unicode(depts, "utf-8")
+			if isinstance(dept, str):
+				dept = unicode(dept, "utf-8")
 			if isinstance(authors, str):
 				authors = unicode(authors, "utf-8")
-   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),depts.encode("utf-8"),authors.encode("utf-8")])
+   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),dept.encode("utf-8"),authors.encode("utf-8")])
    	return str(1)
 
 #10 - Todos os papers de um professor (dado o seu nome)
@@ -367,29 +388,32 @@ def get_papers_area_prof():
 	   			if filename == (area + "-out-papers.csv"):
 	   				file = filename
 
-   	data = open(file_path + file, "r")
+   	data = ""
+   	try:
+   		data = open(file_path + file, "r")
+   	except:
+   		abort(404)
 
-   	out = open(file_path + area + "-all-papers-dept.csv", "w")
+   	out = open(file_path + area + "-all-papers-prof.csv", "w")
 
    	dept = ""
    	title = ""
-   	depts = ""
    	authors = ""
    	writer = csv.writer(out, delimiter=",")
    	for line in reader(data):
    		authors = line[4]
    		if isinstance(authors, str):
 			authors = unicode(authors, "utf-8")
-   		if prof in authors:
+   		if authors.find(prof) != -1:
    			year = line[0]
    			title = line[2]
 			dept = line[3]	
 			if isinstance(title, str):
 				title = unicode(title, "utf-8")
-			if isinstance(depts, str):
-				depts = unicode(depts, "utf-8")
-   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),depts.encode("utf-8"),authors.encode("utf-8")])
-   	return str(1)
+			if isinstance(dept, str):
+				dept = unicode(dept, "utf-8")
+   			writer.writerow([year.encode("utf-8"),title.encode("utf-8"),dept.encode("utf-8"),authors.encode("utf-8")])
+   	return prof
 
 @app.errorhandler(404)
 def not_found(error):
